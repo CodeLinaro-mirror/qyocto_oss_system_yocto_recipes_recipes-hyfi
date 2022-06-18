@@ -5,14 +5,14 @@ inherit ${@bb.utils.contains('TARGET_KERNEL_ARCH', 'aarch64', 'qtikernel-arch', 
 
 DESCRIPTION = "Recipe file for Hy-Fi bridging Netfilter Module"
 LICENSE          = "ISC & GPLv2"
-LIC_FILES_CHKSUM = "file://${TOPDIR}/../poky/meta-qti-ipq/recipes/recipes-hyfi/qca-hyfi-bridge/copyright;md5=6ecbb1f82ee3369a23c46402bd93a9fe"
+LIC_FILES_CHKSUM = "file://${TOPDIR}/../poky/meta-qti-ipq/recipes/recipes-hyfi-oss/qca-hyfi-bridge/copyright;md5=4728e7f54c2a01772aaae890803c91d1"
 
 FILESPATH =+ "${TOPDIR}/../src:"
 
 DEPENDS = "glib-2.0 qca-ssdk-nohnat virtual/kernel"
 
 SRC_URI = "file://ipq/qca-ezmesh/qca-hyfi-bridge \
-	file://ipq/qca-ezmesh/qca-ezmesh-files/qca-hyfi-bridge \
+	file://ipq/qca-ezmesh/qca-ezmesh-files/hyfi/qca-hyfi-bridging/qca-hyfi-bridge \
 	"
 S = "${WORKDIR}/ipq/qca-ezmesh/qca-hyfi-bridge"
 
@@ -69,7 +69,7 @@ do_install() {
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_ecm.h ${D}/usr/include/hyfibr
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_api.h ${D}/usr/include/hyfibr
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_hash.h ${D}/usr/include/hyfibr
-	install -m 0755 ${WORKDIR}/ipq/qca-ezmesh/qca-ezmesh-files/qca-hyfi-bridge/files/hyfi-bridging.init \
+	install -m 0755 ${WORKDIR}/ipq/qca-ezmesh/qca-ezmesh-files/hyfi/qca-hyfi-bridging/qca-hyfi-bridge/files/hyfi-bridging.init \
 		${D}/etc/init.d/hyfi-bridging
 	install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra
 	install -m 0755 ${S}/*.ko ${D}/${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/
