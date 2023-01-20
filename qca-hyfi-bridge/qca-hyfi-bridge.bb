@@ -1,5 +1,6 @@
 inherit autotools-brokensep module qperf
 
+
 # if is TARGET_KERNEL_ARCH is set inherit qtikernel-arch to compile for that arch.
 inherit ${@bb.utils.contains('TARGET_KERNEL_ARCH', 'aarch64', 'qtikernel-arch', '', d)}
 
@@ -9,7 +10,7 @@ LIC_FILES_CHKSUM = "file://${TOPDIR}/../poky/meta-qti-ipq/recipes/recipes-hyfi-o
 
 FILESPATH =+ "${TOPDIR}/../src:"
 
-DEPENDS = "glib-2.0 qca-ssdk-nohnat virtual/kernel"
+DEPENDS = "glib-2.0 qca-ssdk-nohnat virtual/kernel emesh-sp"
 
 SRC_URI = "file://ipq/qca-ezmesh/qca-hyfi-bridge \
 	file://ipq/qca-ezmesh/qca-ezmesh-files/hyfi/qca-hyfi-bridging/qca-hyfi-bridge \
@@ -37,7 +38,8 @@ setup_build_variables() {
 	export PKG_BUILD_DIR="${S}"; \
 	export TARGET_CROSS="${TARGET_PREFIX}"; \
 	export TARGET_CFLAGS="${TOOLCHAIN_OPTIONS} -I${STAGING_INCDIR}/libnl3 \
-				-I${STAGING_KERNEL_BUILDDIR} -I${LINUX_SRC_DIR} \
+				-I${STAGING_KERNEL_BUILDDIR} -I${LINUX_SRC_DIR} -I${STAGING_INCDIR} \
+				-fpie -I${STAGING_DIR}/usr/include/ -I${STAGING_DIR}/usr/include/libxml2/ \
 				-T${STAGING_KERNEL_DIR} -Wno-misleading-indentation"; \
 	export TARGET_LDFLAGS="-L${STAGING_LIBDIR} -lc -lpthread -ldl"; \
 	export LDFLAGS="-L${STAGING_LIBDIR} -lc -lpthread -ldl"; \
@@ -45,21 +47,24 @@ setup_build_variables() {
 	export HYBRID_MC_MLD=1; \
 	export KERNELRELEASE="${LINUX_RELEASE}"; \
 	export LINUX_VERSION="${KERNEL_VERSION}"; \
-	export CFLAGS="-I${STAGING_KERNEL_BUILDDIR} -I${STAGING_KERNEL_DIR}"; \
+	export CFLAGS="-I${STAGING_KERNEL_BUILDDIR} -I${STAGING_KERNEL_DIR} -I${STAGING_DIR}/usr/include/ \
+				-I${STAGING_INCDIR}/glib-2.0 -I${STAGING_INCDIR} -I${STAGING_LIBDIR}/glib-2.0/include / \
+				-I${STAGING_KERNEL_DIR}"; \
 	export MDIR="${S}"; \
 	export PLC_SUPPORT_NF=0; \
 	export DISABLE_SSDK_SUPPORT=1; \
-	export HYFI_BRIDGE_EMESH_ENABLE=0; \
+	export HYFI_BRIDGE_EMESH_ENABLE=1; \
 	export CONFIG_BUILD_YOCTO="y"; \
 	export MODULEPATH="${LINUX_SRC_DIR}"; \
 }
 
 do_compile() {
 	setup_build_variables
-	make -C ${LINUX_SRC_DIR} \
+	make -C ${LINUX_SRC_DIR} HYFI_CFLAGS="-I${TOPDIR}/../src/ipq/qca-ezmesh/emesh-sp/" \
 		M=${S} ARCH="arm" CROSS_COMPILE=${TARGET_PREFIX} \
 		KERNELRELEASE=1 KERNELPATH=${STAGING_KERNEL_DIR} \
-		KBUILDPATH=${STAGING_KERNEL_BUILDDIR} MDIR=${S}
+		KBUILDPATH=${STAGING_KERNEL_BUILDDIR} \
+		KBUILD_EXTRA_SYMBOLS="${STAGING_DIR}/usr/include/emesh-sp/Module.symvers" MDIR=${S}
 }
 
 do_install() {
