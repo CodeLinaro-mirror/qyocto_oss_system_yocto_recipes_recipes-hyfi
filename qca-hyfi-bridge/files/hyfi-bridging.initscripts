@@ -20,7 +20,6 @@
 
 start() {
 		insmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
-		/etc/init.d/repacd repacd_set_map_dpp_config
 		/etc/init.d/hyfi-bridging start
 }
 
