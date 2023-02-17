@@ -19,6 +19,7 @@
 . /lib/functions.sh
 
 start() {
+		/etc/initscripts/start_emesh-sp start
 		insmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
 		/etc/init.d/repacd repacd_set_map_dpp_config
 		/etc/init.d/hyfi-bridging start
@@ -27,6 +28,7 @@ start() {
 stop() {
 		/etc/init.d/hyfi-bridging stop
 		rmmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
+		/etc/initscripts/start_emesh-sp stop
 }
 
 case "$1" in
