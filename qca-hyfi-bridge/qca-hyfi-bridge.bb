@@ -49,8 +49,6 @@ setup_build_variables() {
 	export PLC_SUPPORT_NF=0; \
 	export DISABLE_SSDK_SUPPORT=1; \
 	export HYFI_BRIDGE_EMESH_ENABLE=0; \
-	export CONFIG_BUILD_YOCTO="y"; \
-	export CONFIG_DISABLE_APS_HOOKS="y"; \
 	export MODULEPATH="${LINUX_SRC_DIR}"; \
 }
 
