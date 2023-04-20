@@ -19,10 +19,11 @@ FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} = "dev-so"
 
 FILES_${PN} += "${libdir}"
-FILES_${PN} += "/etc*"
+FILES_${PN} += "/etc/*"
 FILES_${PN} += "/install/*"
 FILES_${PN} += "/usr/lib/*"
 FILES_${PN} += "/etc/init.d/hyfi-bridging"
+FILES_${PN} += "/lib/functions/*"
 
 setup_build_variables() {
 	export STAGING_DIR="${STAGING_DIR}"; \
@@ -77,4 +78,14 @@ do_install() {
 #To start hyfi-briging and insmoding hyfi-bridging.ko on boot-up
 	install -d ${D}/etc/initscripts
 	install -m 0755 ${THISDIR}/files/hyfi-bridging.initscripts ${D}/etc/initscripts/start_hyfi-bridging
+	install -d ${D}/etc/systemd/system/
+	install -m 0644 ${THISDIR}/files/hyfi-bridging.service ${D}/etc/systemd/system/hyfi-bridging.service
+	install -d ${D}/etc/systemd/system/multi-user.target.wants/
+	ln -sf /etc/systemd/system/hyfi-bridging.service \
+		${D}/etc/systemd/system/multi-user.target.wants/hyfi-bridging.service
+	install -m 0644 ${THISDIR}/files/hyfi-bridging.timer ${D}/etc/systemd/system/hyfi-bridging.timer
+	ln -sf /etc/systemd/system/hyfi-bridging.timer \
+		${D}/etc/systemd/system/multi-user.target.wants/hyfi-bridging.timer
+	install -d ${D}/lib/functions/
+	install -m 0755 ${THISDIR}/files/rdk_init_helper.sh ${D}/lib/functions/rdk_init_helper.sh
 }

@@ -15,20 +15,19 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 # /etc/initscripts/start_hyfi-bridging
-
-. /lib/functions.sh
-
 start() {
-		/etc/initscripts/start_emesh-sp start
+#		/etc/initscripts/start_emesh-sp start
 		insmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
-		/etc/init.d/repacd repacd_set_map_dpp_config
-		/etc/init.d/hyfi-bridging start
+		hyctl attach brlan0
+#		/etc/init.d/repacd repacd_set_map_dpp_config
+#		/etc/init.d/hyfi-bridging start
 }
 
 stop() {
-		/etc/init.d/hyfi-bridging stop
+#		/etc/init.d/hyfi-bridging stop
+		hyctl detach brlan0
 		rmmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
-		/etc/initscripts/start_emesh-sp stop
+#		/etc/initscripts/start_emesh-sp stop
 }
 
 case "$1" in
