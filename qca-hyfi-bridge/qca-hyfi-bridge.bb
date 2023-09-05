@@ -83,9 +83,9 @@ do_install() {
 	install -d ${D}/etc/systemd/system/multi-user.target.wants/
 	ln -sf /etc/systemd/system/hyfi-bridging.service \
 		${D}/etc/systemd/system/multi-user.target.wants/hyfi-bridging.service
-	install -m 0644 ${THISDIR}/files/hyfi-bridging.timer ${D}/etc/systemd/system/hyfi-bridging.timer
-	ln -sf /etc/systemd/system/hyfi-bridging.timer \
-		${D}/etc/systemd/system/multi-user.target.wants/hyfi-bridging.timer
+	install -m 0644 ${THISDIR}/files/hyfi-bridging.path ${D}/etc/systemd/system/hyfi-bridging.path
+	ln -sf /etc/systemd/system/hyfi-bridging.path \
+		${D}/etc/systemd/system/multi-user.target.wants/hyfi-bridging.path
 	install -d ${D}/lib/functions/
 	install -m 0755 ${THISDIR}/files/rdk_init_helper.sh ${D}/lib/functions/rdk_init_helper.sh
 }
