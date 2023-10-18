@@ -18,6 +18,7 @@ Wants=hyfi-bridging.path
 
 [Service]
 Type=oneshot
+ExecStartPre=/bin/touch /nvram/hyfi_enable
 ExecStart=/etc/initscripts/start_hyfi-bridging start
 ExecStartPost=systemctl restart qca-ezmesh.service
 ExecStartPost=systemctl restart qca-wsplcd.service
