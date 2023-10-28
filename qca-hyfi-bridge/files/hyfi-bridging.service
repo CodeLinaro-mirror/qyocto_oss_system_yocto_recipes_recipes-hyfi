@@ -18,6 +18,8 @@ Wants=hyfi-bridging.path
 
 [Service]
 Type=oneshot
+ExecStartPre=/bin/sh -c 'while true; do var=`syscfg get ezmesh.config.Enable`; if [ "$var" == "1" ]; then sleep 10; break; fi; sleep 5; done'
+ExecStartPre=/sbin/rdk_helper.sh virtual-vap-enable
 ExecStart=/etc/initscripts/start_hyfi-bridging start
 ExecStartPost=/sbin/rdk_helper.sh eth-hyfi-enable
 ExecStartPost=systemctl restart qca-ezmesh.service
