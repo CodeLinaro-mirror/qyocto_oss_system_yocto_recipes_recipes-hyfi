@@ -18,7 +18,7 @@ Wants=hyfi-bridging.path
 
 [Service]
 Type=oneshot
-ExecStartPre=/bin/touch /nvram/hyfi_enable
+ExecStartPre=/bin/sh -c 'while true; do var=`syscfg get ezmesh.config.Enable`; if [ "$var" == "1" ]; then sleep 10; /bin/touch /nvram/hyfi_enable;  break; fi; sleep 5; done'
 ExecStart=/etc/initscripts/start_hyfi-bridging start
 ExecStartPost=systemctl restart qca-ezmesh.service
 ExecStartPost=systemctl restart qca-wsplcd.service
