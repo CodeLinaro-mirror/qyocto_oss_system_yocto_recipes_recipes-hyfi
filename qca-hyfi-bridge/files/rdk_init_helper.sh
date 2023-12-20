@@ -20,6 +20,7 @@ _C=0
 NO_EXPORT=1
 LOAD_STATE=1
 LIST_SEP=" "
+global_context=""
 
 append() {
         local var="$1"
@@ -39,8 +40,9 @@ list_contains() {
 }
 
 config_load() {
-	`syscfg set init_context $1`
-	`syscfg commit`
+        global_context="$1"
+        #`syscfg set init_context $1`
+        #`syscfg commit`
 }
 
 reset_cb() {
@@ -97,12 +99,17 @@ config_unset() {
 config_get() {
 	local context
 	local ret_val
-	context=`syscfg get init_context`
-	ret_val=`syscfg get $context.$2.$3`
-	if [ -n "$ret_val" ]; then
-		eval "${1}=\${ret_val}"
-	else
+	context="$global_context"
+	if [ "$global_context" == "ezlbd" ]; then
 		eval "${1}=\${4}"
+		return 0
+	else
+		ret_val=`syscfg get $context.$2.$3`
+		if [ -n "$ret_val" ]; then
+				eval "${1}=\${ret_val}"
+		else
+				eval "${1}=\${4}"
+		fi
 	fi
 }
 
@@ -122,7 +129,7 @@ config_set() {
 	local section="$1"
 	local option="$2"
 	local value="$3"
-	local context=`syscfg get init_context`
+	local context="$global_context"
 
 	ret=`syscfg set "${context}.${section}.${option} ${value}"`
 	ret=`syscfg commit`
