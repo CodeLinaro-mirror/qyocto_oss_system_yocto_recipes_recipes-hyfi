@@ -19,6 +19,7 @@ Wants=hyfi-bridging.path
 [Service]
 Type=oneshot
 ExecStart=/etc/initscripts/start_hyfi-bridging start
+ExecStartPost=/sbin/rdk_helper.sh eth-hyfi-enable
 ExecStartPost=systemctl restart qca-ezmesh.service
 ExecStartPost=systemctl restart qca-wsplcd.service
 RemainAfterExit=Yes
