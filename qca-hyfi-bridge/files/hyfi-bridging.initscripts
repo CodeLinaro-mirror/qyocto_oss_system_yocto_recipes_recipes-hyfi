@@ -17,6 +17,9 @@
 # /etc/initscripts/start_hyfi-bridging
 start() {
 #		/etc/initscripts/start_emesh-sp start
+		if lsmod | grep -wq "hyfi_bridging"; then
+			rmmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
+		fi
 		insmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
 		hyctl attach brlan0
 #		/etc/init.d/repacd repacd_set_map_dpp_config
