@@ -21,7 +21,9 @@ start() {
 			rmmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
 		fi
 		insmod /lib/modules/$(uname -r)/kernel/drivers/qca-hyfi-bridge/hyfi-bridging.ko
-		hyctl attach brlan0
+		if [  -f /tmp/wifi_initialized ];then
+			hyctl attach brlan0
+		fi
 #		/etc/init.d/repacd repacd_set_map_dpp_config
 #		/etc/init.d/hyfi-bridging start
 }
