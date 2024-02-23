@@ -3,6 +3,8 @@ inherit prebuilt autotools-brokensep module
 # if is TARGET_KERNEL_ARCH is set inherit prebuilt qtikernel-arch to compile for that arch.
 inherit prebuilt ${@bb.utils.contains('TARGET_KERNEL_ARCH', 'aarch64', 'qtikernel-arch', '', d)}
 
+CLEANBROKEN = "1"
+
 DESCRIPTION = "Recipe file for Hy-Fi bridging Netfilter Module"
 LICENSE          = "ISC & GPLv2"
 LIC_FILES_CHKSUM = "file://${TOPDIR}/../meta-ipq/recipes-hyfi-oss/qca-hyfi-bridge/copyright;md5=4728e7f54c2a01772aaae890803c91d1"
