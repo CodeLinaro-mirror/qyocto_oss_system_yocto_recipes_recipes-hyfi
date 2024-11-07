@@ -22,8 +22,8 @@ ExecStartPre=/bin/sh -c 'while true; do var=`syscfg get ezmesh.config.Enable`; i
 ExecStartPre=/sbin/rdk_helper.sh virtual-vap-enable
 ExecStart=/etc/initscripts/start_hyfi-bridging start
 ExecStartPost=/sbin/rdk_helper.sh eth-hyfi-enable
-ExecStartPost=systemctl restart qca-ezmesh.service
 ExecStartPost=systemctl restart qca-wsplcd.service
+ExecStartPost=systemctl restart qca-ezmesh.service
 RemainAfterExit=Yes
 StandardOutput=syslog+console
 
