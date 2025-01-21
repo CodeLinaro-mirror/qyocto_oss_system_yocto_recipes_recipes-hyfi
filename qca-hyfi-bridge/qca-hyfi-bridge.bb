@@ -69,6 +69,7 @@ do_install() {
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_ecm.h ${D}/usr/include/hyfibr
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_api.h ${D}/usr/include/hyfibr
 	install -m 0644 ${S}/hyfi-netfilter/hyfi_hash.h ${D}/usr/include/hyfibr
+	install -m 0644 ${S}/Module.symvers ${D}/usr/include/hyfibr
 	install -m 0755 ${TOPDIR}/../common/hyfi/qca-hyfi-init-oss/qca-hyfi-bridging/qca-hyfi-bridge/files/hyfi-bridging.init \
 		${D}/etc/init.d/hyfi-bridging
 	install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra
