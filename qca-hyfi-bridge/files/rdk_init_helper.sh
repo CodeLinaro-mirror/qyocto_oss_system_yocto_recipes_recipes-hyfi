@@ -131,14 +131,8 @@ config_set() {
 	local value="$3"
 	local context="$global_context"
 
-	mld_enabled=`syscfg get wsplcd.config.EnableSLO`
-	if [ "$mld_enabled" == "1" ]; then
-		syscfg set $context.$section.$option $value
-		syscfg commit
-	else
-		ret=`syscfg set "${context}.${section}.${option} ${value}"`
-		ret=`syscfg commit`
-	fi
+	ret=`syscfg set "${context}.${section}.${option} ${value}"`
+	ret=`syscfg commit`
 }
 
 config_foreach() {
