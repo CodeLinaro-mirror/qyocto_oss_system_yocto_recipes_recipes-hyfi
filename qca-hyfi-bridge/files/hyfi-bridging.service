@@ -19,6 +19,7 @@ Wants=hyfi-bridging.path
 [Service]
 Type=oneshot
 ExecStartPre=/bin/sh -c 'while true; do var=`syscfg get ezmesh.config.Enable`; if [ "$var" == "1" ]; then sleep 10; break; fi; sleep 5; done'
+ExecStartPre=/bin/sh -c 'while true; do if [ ! -f /etc/rdk_extender ] || [ -f /tmp/wifi_initialized ]; then sleep 1; break; fi; sleep 5; done'
 ExecStart=/etc/initscripts/start_hyfi-bridging start
 ExecStartPost=/sbin/rdk_helper.sh eth-hyfi-enable
 ExecStartPost=systemctl restart qca-wsplcd.service
