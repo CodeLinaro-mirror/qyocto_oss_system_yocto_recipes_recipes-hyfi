@@ -104,7 +104,7 @@ config_get() {
 		eval "${1}=\${4}"
 		return 0
 	else
-		ret_val=`syscfg get $context.$2.$3`
+		ret_val=$(grep -m 1 "^${context}.${2}.${3}=" /nvram/syscfg.db | cut -d'=' -f2-)
 		if [ -n "$ret_val" ]; then
 				eval "${1}=\${ret_val}"
 		else
@@ -125,6 +125,12 @@ config_get_bool() {
         export ${NO_EXPORT:+-n} "$1=$_tmp"
 }
 
+# config_get_item <variable>
+config_get_item() {
+    local key="$1"
+    grep -m 1 "^$key=" /nvram/syscfg.db | cut -d'=' -f2-
+}
+
 config_set() {
 	local section="$1"
 	local option="$2"
@@ -142,12 +148,12 @@ config_foreach() {
         [ "$#" -ge 1 ] && shift
         local section cfgtype
 
-	wireless_section=`syscfg get wireless_section`
+	wireless_section=$(config_get_item "wireless_section")
 
 	[ -z "$wireless_section" ] && return 0
 
 	for section in ${wireless_section}; do
-		cfgtype=`syscfg get wireless."$section".TYPE`
+		cfgtype=$(config_get_item "wireless.$section.TYPE")
 		if [[ $___type != $cfgtype ]]
 		then
 			continue
